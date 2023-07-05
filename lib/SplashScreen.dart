@@ -30,6 +30,7 @@ class _SplashState extends State<Splash> {
           ),SizedBox(height: 10),
           Center(
             child: Container(
+              //aap homepage banao tab tak ek office ka call hai attend kar lu tehai
               width: 200,
               margin: EdgeInsets.only(left: 25),
               child: Center(child: Text('Speech Therapy',style: TextStyle(fontSize: 24,fontWeight:FontWeight.w500 ,))),

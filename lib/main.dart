@@ -6,6 +6,8 @@ import 'package:speechtherapy/Login.dart';
 import 'package:speechtherapy/Signup.dart';
 import 'package:speechtherapy/SplashScreen.dart';
 
+import 'Test.dart';
+
 void main(){
   runApp(MyApp());
 

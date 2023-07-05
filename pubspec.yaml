@@ -31,7 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   dropdown_search: ^5.0.6
-
+  carousel_slider: ^4.2.1
+  youtube_player_flutter: ^8.1.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -64,6 +65,15 @@ flutter:
   assets:
      - assets/logo.png
      - assets/profile.png
+     - assets/girl.png
+     - assets/discussion.png
+     - assets/meditating.png
+     - assets/training.png
+     - assets/success.png
+     - assets/call-back.png
+     - assets/workout.png
+     - assets/customer-service.png
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
