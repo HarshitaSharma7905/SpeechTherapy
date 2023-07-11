@@ -5,10 +5,19 @@ import 'package:speechtherapy/HomeScreen.dart';
 import 'package:speechtherapy/Login.dart';
 import 'package:speechtherapy/Signup.dart';
 import 'package:speechtherapy/SplashScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'Test.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main(){
+import 'firebase_options.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 
 }
@@ -19,7 +28,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // home: Splash(),
-      home: Home(),
+      // home:(FirebaseAuth.instance.currentUser !=null)?Home():Splash(),
+      home: Test()
     );
   }
 }

@@ -1,6 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:speechtherapy/HomeScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:speechtherapy/Login.dart';
+
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -10,6 +13,40 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  TextEditingController emailController=TextEditingController();
+  TextEditingController passwordController =TextEditingController();
+  TextEditingController cPasswordController = TextEditingController();
+  //create account
+  void createaccount() async{
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String cPassword = cPasswordController.text.trim();
+    if(email==""||password==""||cPassword==""){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Enter Required Details"),
+      ));
+    }
+    else if(password !=cPassword){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Password dont match"),
+      ));
+    }
+    else{
+     try{
+       UserCredential userCredential= await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+         content: Text("Account Created Successfully"),
+       ));
+       Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+     }on FirebaseAuthException catch(err)
+    {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.toString()),
+      ));
+    }
+
+    }
+  }
   var _selectedgender=null;
   String selectedCity="Choose City";
 
@@ -111,49 +148,52 @@ class _SignupState extends State<Signup> {
                 Container(width: 400,
                 child:Column(
                   children: [
-                    TextField(decoration: InputDecoration(labelText: 'First Name',prefixIcon: Icon(Icons.person),border: OutlineInputBorder()),keyboardType: TextInputType.name),SizedBox(height: 10),
-                    TextField(decoration: InputDecoration(labelText: 'Gmail',prefixIcon: Icon(Icons.email_outlined),border: OutlineInputBorder()),keyboardType: TextInputType.emailAddress),SizedBox(height: 10),
-                    TextField(decoration: InputDecoration(labelText: 'Contact',prefixIcon: Icon(Icons.phone),border: OutlineInputBorder()),keyboardType: TextInputType.number),SizedBox(height: 10),
-                    TextField(decoration: InputDecoration(labelText: 'Password',prefixIcon: Icon(Icons.key),border: OutlineInputBorder()),keyboardType: TextInputType.visiblePassword),SizedBox(height: 10),
-                    DropdownButtonFormField<String>(
-                      hint: Center(child: Text('Select Gender')),
-                      decoration: InputDecoration(border: OutlineInputBorder()),
-                      value: _selectedgender, onChanged: (value) {  },
-                    items: [
-                            DropdownMenuItem(child: Text('Select Gender'),value: "-1"),
-                            DropdownMenuItem(child: Text('Male'),value: "0",),
-                            DropdownMenuItem(child: Text('Female'),value: "1",),
-                            DropdownMenuItem(child: Text('Dont prefer to say'),value: "2"),
+                    // TextField(decoration: InputDecoration(labelText: 'First Name',prefixIcon: Icon(Icons.person),border: OutlineInputBorder()),keyboardType: TextInputType.name),SizedBox(height: 10),
+                    TextField(controller: emailController,decoration: InputDecoration(labelText: 'Gmail',prefixIcon: Icon(Icons.email_outlined),border: OutlineInputBorder()),keyboardType: TextInputType.emailAddress),SizedBox(height: 10),
+                    // TextField(decoration: InputDecoration(labelText: 'Contact',prefixIcon: Icon(Icons.phone),border: OutlineInputBorder()),keyboardType: TextInputType.number),SizedBox(height: 10),
+                    TextField(controller: passwordController,decoration: InputDecoration(labelText: 'Password',prefixIcon: Icon(Icons.key),border: OutlineInputBorder()),keyboardType: TextInputType.visiblePassword),SizedBox(height: 10),
 
-                    ],
-                   ),SizedBox(height: 10),
-                  DropdownSearch(
-                    items:states ,
-                    selectedItem: selectedstate,
-                    onChanged: (value) {
-                      setState(() {
-                       selectedstate=value!;
-                       selectedCity="Choose City";
-                       if(selectedstate!="Choose State")
-                         {
-                           cityDropdown=true;
-                         }
-                      });
-                    },
-                  ),SizedBox(height: 10),
-                    Visibility(
-                        visible:cityDropdown ,
-                        child: DropdownSearch<String>(
-                          selectedItem: selectedCity,
-                          items: selectedstate != "Choose State" ? cities[selectedstate]! : [],
-                          onChanged: (value) {
-                            selectedCity=value!;
-                          },
-
-                        )),
+                    TextField(controller: cPasswordController,decoration: InputDecoration(labelText: 'Confirm Password',prefixIcon: Icon(Icons.key),border: OutlineInputBorder()),keyboardType: TextInputType.visiblePassword),SizedBox(height: 10),
+                  //   DropdownButtonFormField<String>(
+                  //     hint: Center(child: Text('Select Gender')),
+                  //     decoration: InputDecoration(border: OutlineInputBorder()),
+                  //     value: _selectedgender, onChanged: (value) {  },
+                  //   items: [
+                  //           DropdownMenuItem(child: Text('Select Gender'),value: "-1"),
+                  //           DropdownMenuItem(child: Text('Male'),value: "0",),
+                  //           DropdownMenuItem(child: Text('Female'),value: "1",),
+                  //           DropdownMenuItem(child: Text('Dont prefer to say'),value: "2"),
+                  //
+                  //   ],
+                  //  ),SizedBox(height: 10),
+                  // DropdownSearch(
+                  //   items:states ,
+                  //   selectedItem: selectedstate,
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //      selectedstate=value!;
+                  //      selectedCity="Choose City";
+                  //      if(selectedstate!="Choose State")
+                  //        {
+                  //          cityDropdown=true;
+                  //        }
+                  //     });
+                  //   },
+                  // ),SizedBox(height: 10),
+                  //   Visibility(
+                  //       visible:cityDropdown ,
+                  //       child: DropdownSearch<String>(
+                  //         selectedItem: selectedCity,
+                  //         items: selectedstate != "Choose State" ? cities[selectedstate]! : [],
+                  //         onChanged: (value) {
+                  //           selectedCity=value!;
+                  //         },
+                  //
+                  //       )),
                     Container(
                       width: 200,height: 40,
                       child: ElevatedButton(onPressed: () {
+                        createaccount();
 
                       }, child: Text('Submit'),style: ButtonStyle(shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))),),
                     )
